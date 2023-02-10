@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from __future__ import print_function
 import argparse
 import random
@@ -59,10 +61,10 @@ def read_genepop(genepop_file):
 
 			if current_pop == 1:
 				names_pop1.append(sample_search.group(1).rstrip())
-				allele_list_pop1.append(sample_search.group(2).lstrip().split(" "))
+				allele_list_pop1.append(str(sample_search.group(3)).lstrip().split(" "))
 			if current_pop == 2:
 				names_pop2.append(sample_search.group(1).rstrip())
-				allele_list_pop2.append(sample_search.group(2).lstrip().split(" "))
+				allele_list_pop2.append(str(sample_search.group(3)).lstrip().split(" "))
 
 		#POP line
 		if pop_search:
@@ -99,8 +101,8 @@ def build_matrix(raw_alleles, locus_list):
 
 		for sample in raw_alleles:
 
-			a = sample[i][0:len(sample[i])/2]
-			b = sample[i][len(sample[i])/2:len(sample[i])]
+			a = sample[i][0:int(len(sample[i])/2)]
+			b = sample[i][int(len(sample[i])/2):len(sample[i])]
 
 			allele_a, allele_b, count_a, count_b = allele_check(a, allele_a, allele_b, count_a, count_b)
 			allele_a, allele_b, count_a, count_b = allele_check(b, allele_a, allele_b, count_a, count_b)
@@ -177,16 +179,16 @@ def output_file(loc_list, pop1_raw, pop2_raw, pop1_names, pop2_names, f1_off):
 	#Parentals
 	if not args.exclude:
 
-		file_out.write("POP\n")
+		file_out.write("Pop\n")
 		for i in range(len(pop1_names)):
-			file_out.write(pop1_names[i] + ",  ")
+			file_out.write(pop1_names[i] + " ,  ")
 			for locus in pop1_raw[i]:
 				file_out.write(locus + " ")
 			file_out.write("\n")
 
-		file_out.write("POP\n")
+		file_out.write("Pop\n")
 		for i in range(len(pop2_names)):
-			file_out.write(pop2_names[i] + ",  ")
+			file_out.write(pop2_names[i] + " ,  ")
 			for locus in pop2_raw[i]:
 				file_out.write(locus + " ")
 			file_out.write("\n")
@@ -198,7 +200,7 @@ def output_file(loc_list, pop1_raw, pop2_raw, pop1_names, pop2_names, f1_off):
 			prefix = int_off[i]
 			continue
 
-		file_out.write("POP\n")
+		file_out.write("Pop\n")
 		for j in range(len(int_off[i])):
 			if j < 9:
 				zeroes = "00"
@@ -207,7 +209,7 @@ def output_file(loc_list, pop1_raw, pop2_raw, pop1_names, pop2_names, f1_off):
 			else:
 				zeroes = ""
 
-			file_out.write(prefix + zeroes + str(j + 1) + ",  ")
+			file_out.write(prefix + zeroes + str(j + 1) + " ,  ")
 			for locus in int_off[i][j]:
 				file_out.write(locus + " ")
 			file_out.write("\n")
@@ -226,6 +228,8 @@ int_off.append(offspring_gen(pop1_freq, pop2_freq))
 if args.introgress == 2 or args.introgress == 3:
 	f1_freq = build_matrix(int_off[1], loc_list)
 
+	int_off.append("F2HYB_")
+	int_off.append(offspring_gen(f1_freq, f1_freq))
 	int_off.append("B2" + args.p1name + "_")
 	int_off.append(offspring_gen(pop1_freq, f1_freq))
 	int_off.append("B2" + args.p2name + "_")
@@ -235,8 +239,6 @@ if args.introgress == 3:
 	b1pop1_freq = build_matrix(int_off[3], loc_list)
 	b1pop2_freq = build_matrix(int_off[5], loc_list)
 
-	int_off.append("F2HYB_")
-	int_off.append(offspring_gen(f1_freq, f1_freq))
 	int_off.append("B3" + args.p1name + "_")
 	int_off.append(offspring_gen(pop1_freq, b1pop1_freq))
 	int_off.append("B3" + args.p2name + "_")
