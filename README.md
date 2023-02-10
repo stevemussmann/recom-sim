@@ -1,6 +1,6 @@
 # `recom-sim`: A hybrid simulation tool
 
-## Notes
+## Notes 02-09-2023
 This repository was forked from salanova-elliott/recom-sim. I modified the assumptions in genepop input format to be more in line with the 'traditional' format. In other words, the program now assumes that sample names and genotype data will be separated by space comma space space ( ,  ) rather than comma space space (,  ). Likewise, genepop outputs underwent similar minor alterations.
 
 The biggest change is that an introgression level of 2 now simulates F2 hybrids. Previously this class was only simulated at introgression level 3 despite being shown in the figure below for level 2.
