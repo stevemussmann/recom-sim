@@ -1,5 +1,10 @@
 # `recom-sim`: A hybrid simulation tool
 
+## Notes
+This repository was forked from salanova-elliott/recom-sim. I modified the assumptions in genepop input format to be more in line with the 'traditional' format. In other words, the program now assumes that sample names and genotype data will be separated by space comma space space ( ,  ) rather than comma space space (,  ). Likewise, genepop outputs underwent similar minor alterations.
+
+The biggest change is that an introgression level of 2 now simulates F2 hybrids. Previously this class was only simulated at introgression level 3 despite being shown in the figure below for level 2.
+
 ## Uses
 
 `recom-sim` is a tool based on Nielsen et al.'s `HYBRIDLAB` for simulating hybrids from the genetic data of two reference populations using allele frequencies. `recom-sim` allows for faster simulations, the inclusion of significantly more markers, and the creation of common introgression classes (F2, B2, B3) in one step. While mainly geared towards SNP data, any biallelic data in `GENEPOP` format can be used.
